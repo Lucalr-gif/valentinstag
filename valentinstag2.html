@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Für Leah 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to bottom right, #ffb6d9, #ff69b4);
+    overflow: hidden;
+}
+
+.container {
+    margin-top: 120px;
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    font-size: 2.5em;
+    background: rgba(255,255,255,0.9);
+    display: inline-block;
+    padding: 20px 40px;
+    border-radius: 20px;
+}
+
+.buttons {
+    margin-top: 50px;
+    position: relative;
+}
+
+button {
+    font-size: 1.5em;
+    padding: 15px 30px;
+    margin: 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.15);
+}
+
+.ja { background: #ff4da6; color: white; }
+.jaaaa { background: #ff1a75; color: white; }
+
+.nein {
+    background: gray;
+    color: white;
+    position: absolute;
+}
+
+#message {
+    margin-top: 40px;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.sparkle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: sparkleFall linear infinite;
+}
+
+@keyframes sparkleFall {
+    0% { transform: translateY(-10px); opacity:1; }
+    100% { transform: translateY(110vh); opacity:0; }
+}
+
+.heart {
+    position: fixed;
+    font-size: 35px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px); opacity:1; }
+    100% { transform: translateY(110vh); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Leah 💖<br>Willst du mein Valentinstag Date sein?</h1>
+
+    <div class="buttons">
+        <button class="ja" onclick="ja()">Ja</button>
+        <button class="jaaaa" onclick="jaaaa()">JAAAA</button>
+        <button class="nein" id="neinBtn">Nein</button>
+    </div>
+
+    <div id="message"></div>
+</div>
+
+<canvas id="confetti"></canvas>
+<audio id="music" src="musik.mp3"></audio>
+
+<script>
+
+/* NEIN BUTTON RENNT WEG */
+const neinBtn = document.getElementById("neinBtn");
+
+neinBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
+    neinBtn.style.left = x + "px";
+    neinBtn.style.top = y + "px";
+});
+
+/* GLITZER */
+function startSparkles() {
+    for (let i = 0; i < 80; i++) {
+        let sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = Math.random() * 100 + "vw";
+        sparkle.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(sparkle);
+    }
+}
+startSparkles();
+
+/* MUSIK */
+function playMusic() {
+    document.getElementById("music").play();
+}
+
+function hideButtons() {
+    document.querySelector(".buttons").style.display = "none";
+}
+
+function ja() {
+    hideButtons();
+    playMusic();
+    document.getElementById("message").innerHTML =
+    "🎉 Juhuuu Leah!!! 🎉<br>Ich freue mich riesig auf unser Date 💖";
+    startConfetti();
+}
+
+function jaaaa() {
+    hideButtons();
+    playMusic();
+    document.getElementById("message").innerHTML =
+    "💖 Danke Leah, du bist die beste Freundin der Welt! 💖<br>Ich freue mich so sehr auf dich!";
+    startHearts();
+}
+
+/* Konfetti */
+function startConfetti() {
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let pieces = [];
+    for (let i = 0; i < 250; i++) {
+        pieces.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 8,
+            speed: Math.random() * 3 + 2
+        });
+    }
+
+    function update() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "white";
+        pieces.forEach(p => {
+            ctx.fillRect(p.x, p.y, p.size, p.size);
+            p.y += p.speed;
+            if (p.y > canvas.height) p.y = 0;
+        });
+        requestAnimationFrame(update);
+    }
+    update();
+}
+
+/* HERZEN */
+function startHearts() {
+    for (let i = 0; i < 120; i++) {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }
+}
+</script>
+
+</body>
+</html>
